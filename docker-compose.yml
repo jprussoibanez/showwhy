@@ -13,6 +13,7 @@ services:
       - all
 
   backend_api:
+    platform: linux/arm64/v8
     build: ./python/backend
     environment:
       - ENABLE_CORS=http://localhost:3000
@@ -27,6 +28,7 @@ services:
       - backend
 
   backend_worker:
+    platform: linux/arm64/v8
     build: ./python/backend
     environment:
       - REDIS_URL=redis://redis:6379/0
@@ -38,6 +40,14 @@ services:
     profiles:
       - all
       - backend
+  
+  backend_test:
+    platform: linux/arm64/v8
+    build: 
+      context: ./python/backend/tests
+      dockerfile: test.packages.dockerfile
+    volumes:
+      - ./python/backend:/backend
 
   redis:
     image: redis:6-alpine
